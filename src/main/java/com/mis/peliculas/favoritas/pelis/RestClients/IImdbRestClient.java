@@ -1,11 +1,20 @@
 package com.mis.peliculas.favoritas.pelis.RestClients;
 
-import org.springframework.stereotype.Component;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-@Component
-public class IImdbRestClient {
+import com.mis.peliculas.favoritas.pelis.dto.SearchResponseDto;
 
-    public String getMedia() {
-        return "Respuesta desde IImdbRestClient";
-    }
+@FeignClient(
+    name = "IImdbRestClient",
+    url = "${restclient.omdb.url}"
+)
+public interface IImdbRestClient {
+
+    @GetMapping("/")
+    public SearchResponseDto getMedia(
+        @RequestParam ("s") String search,
+        @RequestParam ("apikey") String key
+    );
 }
